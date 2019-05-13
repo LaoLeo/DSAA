@@ -14,6 +14,23 @@ class SinglyLinkedList {
         this.length = 0
     }
 
+    /**
+     * 
+     * @param {Array} array 
+     * 
+     * @return {SinglyLinkedList}
+     */
+    static create(array) {
+        const link = new SinglyLinkedList()
+        array.forEach(element => {
+
+            link.append(new Node(element))
+
+        });
+
+        return link
+    }
+
     findByValue(element) {
         let currentNode = this.head
         while (currentNode.element !== element && currentNode.next !== null) {
@@ -101,4 +118,52 @@ class SinglyLinkedList {
 
             return currentNode
     }
+}
+
+// test
+const str = 'kdkddkdk'
+const str_not = 'segjdjrssree'
+
+const link = SinglyLinkedList.create(str.split())
+const link_strnot = SinglyLinkedList.create(str_not.split())
+console.debug(str + ' isPalindrome:', isPalindrome(link))
+console.debug(str_not + ' isPalindrome:', isPalindrome(link_strnot))
+
+/**
+ * 判断是否为回文串
+ * 
+ * 
+ */
+function isPalindrome(link) {
+    if (link.length <= 1) return true
+
+    let fast = link.head
+    let slow = link.head
+    let pre = null
+    let temp = null
+
+    while (fast != null && fast.next != null) {
+        fast = fast.next.next
+
+        // 关键
+        temp = slow.next
+        slow.next = pre
+        pre = slow
+        slow = temp
+    }
+
+    if (fast != null) {
+        slow = slow.next
+    }
+
+    while (slow != null) {
+        if (slow.element !== pre.element) {
+            return false
+        }
+
+        slow = slow.next
+        pre = pre.next
+    }
+
+    return true
 }
