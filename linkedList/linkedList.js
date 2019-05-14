@@ -20,10 +20,13 @@ class LinkedList {
 
     display() {
         let currentNode = this.head
-        while(currentNode !== null) {
-            console.log(currentNode.element)
+        let res = ''
+
+        while (currentNode !== null) {
+            res += currentNode.element + '=>'
             currentNode = currentNode.next
         }
+        console.log(res)
     }
 }
 
@@ -102,7 +105,7 @@ class SinglyLinkedList extends LinkedList {
             this.head = node
             this.length++
 
-                return true
+            return true
         }
         if (position === this.length) {
             while (currentNode.next !== null) {
@@ -111,7 +114,7 @@ class SinglyLinkedList extends LinkedList {
             currentNode.next = node
             this.length++
 
-                return true
+            return true
         }
 
         while (i < position - 1) {
@@ -122,7 +125,7 @@ class SinglyLinkedList extends LinkedList {
         currentNode.next = node
         this.length++
 
-            return true
+        return true
     }
 
     remove(element) {
@@ -163,11 +166,28 @@ class SinglyLinkedList extends LinkedList {
 
         this.length--
 
-            return currentNode
+        return currentNode
+    }
+
+    reverse() {
+        this.display()
+        let pre = null
+        let temp = null
+        let currentNode = this.head
+
+        while (currentNode !== null) {
+            temp = currentNode.next
+            currentNode.next = pre
+            pre = currentNode
+            currentNode = temp
+        }
+        
+        this.head = pre
+        this.display()
     }
 }
 
-// TODO: 双链表 带头链表
+// 双链表 带头链表
 class DoubleLinkedList extends LinkedList {
     constructor() {
         super()
@@ -230,7 +250,7 @@ class DoubleLinkedList extends LinkedList {
 
         node.next = null
         node.pre = null
-        
+
         this.length--
 
         return true
