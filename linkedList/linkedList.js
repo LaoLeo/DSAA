@@ -1,3 +1,13 @@
+/**
+ * 1) 单链表
+ *      - 环检测
+ *      - 单链表反转
+ *      - 两个有序链表的合并
+ * 2) 双链表
+ * 3) 循环单链表
+ * 4) 循环双链表
+ */
+
 class Node {
     constructor(element) {
         this.element = element
@@ -169,12 +179,14 @@ class SinglyLinkedList extends LinkedList {
         return currentNode
     }
 
+    // 单链表翻转
     reverse() {
         this.display()
         let pre = null
         let temp = null
         let currentNode = this.head
 
+        // 关键在额外的两个指针粉分别索引到上下两个节点
         while (currentNode !== null) {
             temp = currentNode.next
             currentNode.next = pre
@@ -185,6 +197,25 @@ class SinglyLinkedList extends LinkedList {
         this.head = pre
         this.display()
     }
+
+    // 环检测
+    checkCircle() {
+        if (this.length < 1) return false
+
+        let fast = this.head.next
+        let slow = this.head
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next
+            slow = slow.next
+            if (fast === slow) return true
+        }
+
+        return false
+    }
+
+    // TODO: 两个有序的链表合并
+    // 删除链表倒数第n个结点
+    // 求链表的中间结点
 }
 
 // 双链表 带头链表
