@@ -213,6 +213,21 @@ class SinglyLinkedList extends LinkedList {
         return false
     }
 
+    /**
+     * 克隆
+     */
+    copy() {
+        let currentNode = this.head
+        const list = new SinglyLinkedList()
+        while(currentNode !== null) {
+            const node = new Node(currentNode.element)
+            node.next = currentNode.next
+            list.append(node)
+        }
+
+        return list
+    }
+
     // TODO: 两个有序的链表合并
     // 删除链表倒数第n个结点
     // 求链表的中间结点
