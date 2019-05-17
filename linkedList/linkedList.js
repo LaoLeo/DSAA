@@ -3,6 +3,7 @@
  *      - 环检测
  *      - 单链表反转
  *      - 两个有序链表的合并
+ *      - 求链表的中间节点
  * 2) 双链表
  * 3) 循环单链表
  * 4) 循环双链表
@@ -115,7 +116,7 @@ class SinglyLinkedList extends LinkedList {
             this.head = node
             this.length++
 
-            return true
+                return true
         }
         if (position === this.length) {
             while (currentNode.next !== null) {
@@ -124,7 +125,7 @@ class SinglyLinkedList extends LinkedList {
             currentNode.next = node
             this.length++
 
-            return true
+                return true
         }
 
         while (i < position - 1) {
@@ -135,7 +136,7 @@ class SinglyLinkedList extends LinkedList {
         currentNode.next = node
         this.length++
 
-        return true
+            return true
     }
 
     remove(element) {
@@ -176,7 +177,7 @@ class SinglyLinkedList extends LinkedList {
 
         this.length--
 
-        return currentNode
+            return currentNode
     }
 
     // 单链表翻转
@@ -193,7 +194,7 @@ class SinglyLinkedList extends LinkedList {
             pre = currentNode
             currentNode = temp
         }
-        
+
         this.head = pre
         this.display()
     }
@@ -219,7 +220,7 @@ class SinglyLinkedList extends LinkedList {
     copy() {
         let currentNode = this.head
         const list = new SinglyLinkedList()
-        while(currentNode !== null) {
+        while (currentNode !== null) {
             const node = new Node(currentNode.element)
             node.next = currentNode.next
             list.append(node)
@@ -228,9 +229,25 @@ class SinglyLinkedList extends LinkedList {
         return list
     }
 
-    // TODO: 两个有序的链表合并
     // 删除链表倒数第n个结点
     // 求链表的中间结点
+    findMiddleNode() {
+        if (this.length === 0) return null
+
+        let slow, fast, pre
+        slow = fast = this.head
+        while (fast !== null && fast.next !== null) {
+            pre = slow
+            slow = slow.next
+            fast = fast.next.next
+        }
+
+        if (fast !== null) {
+            return slow
+        } else {
+            return [pre, slow]
+        }
+    }
 }
 
 // 双链表 带头链表
@@ -282,7 +299,7 @@ class DoubleLinkedList extends LinkedList {
 
         this.length++
 
-        return true
+            return true
     }
 
     remove(element) {
@@ -299,7 +316,7 @@ class DoubleLinkedList extends LinkedList {
 
         this.length--
 
-        return true
+            return true
     }
 }
 
