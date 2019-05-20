@@ -24,6 +24,10 @@ link_order_2.display()
 console.log("========findMiddleNode=========")
 console.log(link_concat.findMiddleNode())
 console.log(link_order_2.findMiddleNode())
+console.log("========removeByIndeEnd=========")
+const arr_1 = [9, 3, 4, 4, 7, 8]
+const link_markfrom_arr_1 = SinglyLinkedList.create(arr_1)
+link_markfrom_arr_1.removeByIndexFromEnd(2)
 
 console.log("========doubleLinkedList=========")
 const doubleLink = new DoubleLinkedList()

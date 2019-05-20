@@ -230,6 +230,30 @@ class SinglyLinkedList extends LinkedList {
     }
 
     // 删除链表倒数第n个结点
+    removeByIndexFromEnd(index) {
+        if (this.checkCircle()) return false
+
+        this.reverse()
+
+        // 转化为带头节点
+        let node = new Node('HEAD')
+        node.next = this.head
+        let currentNode = node
+        let pre = 1
+        while (currentNode !== null && pre <= index) {
+            currentNode = currentNode.next
+            pre++
+        }
+
+        if (currentNode === null) {
+            console.log("无法删除最后一个节点或节点不存在")
+            return false
+        }
+
+        this.remove(currentNode.element)
+        this.reverse()
+    }
+
     // 求链表的中间结点
     findMiddleNode() {
         if (this.length === 0) return null
