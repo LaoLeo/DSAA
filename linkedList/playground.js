@@ -1,5 +1,12 @@
 const { SinglyLinkedList, DoubleLinkedList } = require('./linkedList')
-const { isPalindrome, concatOrderedList, mergeSortedLists } = require('./algorithm')
+const { isPalindrome, concatOrderedList, mergeSortedLists, LRU } = require('./algorithm')
+
+console.log("========LRU=========")
+const files = ['a.png', 'b.png', 'c.html', 'd.js']
+const LURCache = new LRU(files)
+LURCache.fetchFile('a.png')
+LURCache.fetchFile('e.css')
+LURCache.fetchFile('f.css')
 
 // isPalidrome
 const str = 'kdkddkdk'

@@ -87,6 +87,17 @@ class SinglyLinkedList extends LinkedList {
         return currentNode
     }
 
+    pop() {
+        let node = this.head
+        if (!node) return null
+
+        this.head = this.head.next
+        node.next = null
+        this.length--
+
+        return node
+    }
+
     append(node) {
         let currentNode
 

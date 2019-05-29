@@ -1,13 +1,58 @@
+const {
+    SinglyLinkedList,
+    Node
+} = require('./linkedList')
+
+// TODO: LRU算法
+class LRU {
+    constructor(files = [], max = 5) {
+        files = files.slice(0, max)
+        this.max = max
+        this.linkedList = SinglyLinkedList.create(files)
+        console.log('缓存的文件有：', files.join('=>'))
+    }
+
+    fetchFile(fileName) {
+        let currentNode = this.linkedList.head      
+        let pre = null
+
+        while (currentNode !== null && currentNode.element !== fileName) {
+            pre = currentNode
+            currentNode = currentNode.next
+        }
+        
+
+        if (currentNode !== null) {
+            // 命中
+            console.log('命中, 从缓存返回：', currentNode.element)
+            if (pre) {
+                pre.next = currentNode.next
+            } else {
+                this.linkedList.head = currentNode.next
+            }
+            currentNode.next = null
+            this.linkedList.append(currentNode)
+            this.linkedList.length-- // append加1，实际是移动不用加1
+        } else {
+            // 不命中
+            console.log('缓存中没有:', fileName)
+            console.log('获取'+fileName+'中...')
+            console.log('放进缓存')
+            if (this.linkedList.length >= this.max) this.linkedList.pop()
+            this.linkedList.append(new Node(fileName))
+        }
+
+        console.log('缓存列表:')
+        this.linkedList.display()
+    }
+}
+
 module.exports = {
     isPalindrome,
     concatOrderedList,
-    mergeSortedLists
+    mergeSortedLists,
+    LRU
 }
-
-const { SinglyLinkedList, Node } = require('./linkedList')
-
-// TODO: LRU算法
-
 
 /**
  * 判断是否为回文串
