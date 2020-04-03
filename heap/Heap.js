@@ -20,35 +20,26 @@ function swap(arr, i, j) {
     arr[j] = temp
 }
 
-
 class Heap {
     constructor(capacity) {
-        // 大顶堆
         this.arr = [] // 数组，从下标为1开始存储数据
         this.n = capacity // 堆可以存储数据的最大个数
         this.count = 0 // 堆中已经存储的数据个数
     }
 
-    // 插入
-    // 自下往上堆化
-    insert(data) {
-        let { arr } = this
-        if (this.count > this.n) return console.warn("堆已满")
-
-        let i = ++this.count
-        arr[i] = data
-        let j = parseInt(i/2)
-        while(j > 0 && arr[j] < arr[i]) {
-            swap(arr, j, i)
-            i = j
-            j = parseInt(i/2)
-        }
-
-        return this
+    static createMaxHeap(capacity) {
+        return new MaxHeap(capacity)
     }
 
-    // 删除堆顶
-    removeMax() {
+    static createMinHeap(capacity) {
+        return new MinHeap(capacity)
+    }
+
+    insert() {
+        throw new Error("this function should be override")
+    }
+
+    removeTop() {
         let {arr} = this
         if (this.count == 0) return console.warn("空堆")
         arr[1] = arr[this.count] 
@@ -59,16 +50,8 @@ class Heap {
         return this
     }
 
-    // 自上往下堆化
     heapify(a, n, i) {
-        while(true) {
-            let maxPos = i
-            if (i*2 <= n && a[i*2] > a[i]) maxPos = 2*i
-            if (i*2+1 <= n && a[i*2+1] > a[maxPos])  maxPos = i*2+1 
-            if (maxPos == i) break
-            swap(a, maxPos, i)
-            i = maxPos
-        }
+        throw new Error("this function should be override")
     }
 
     // 建堆|堆化
@@ -81,7 +64,7 @@ class Heap {
         }
     }
 
-    // 堆排序
+    // 堆排序，将堆顶元素放到数组最后
     // O(nlogn)
     sort(a, n) {
         a = a || this.arr
@@ -104,12 +87,87 @@ class Heap {
     }
 }
 
-// demo
-let heap = new Heap(100)
-heap.insert(5).insert(4).insert(6).insert(8).insert(7).insert(3).insert(2).insert(1).print()
-heap.removeMax().print().sort().print()
+class MaxHeap extends Heap {
+    constructor(capacity) {
+        super(capacity)
+    }
 
-return Heap
+    // 插入
+    // 自下往上堆化
+    // O(logn)
+    insert(data) {
+        let { arr } = this
+        if (this.count > this.n) return console.warn("堆已满")
+
+        let i = ++this.count
+        let j = parseInt(i/2)
+        arr[i] = data
+        while(j > 0 && arr[j] < arr[i]) {
+            swap(arr, j, i)
+            i = j
+            j = parseInt(i/2)
+        }
+
+        return this
+    }
+
+    // 自上往下堆化
+    heapify(a, n, i) {
+        while(true) {
+            let maxPos = i
+            if (i*2 <= n && a[i*2] > a[i]) maxPos = 2*i
+            if (i*2+1 <= n && a[i*2+1] > a[maxPos])  maxPos = i*2+1 
+            if (maxPos == i) break
+            swap(a, maxPos, i)
+            i = maxPos
+        }
+    }
+}
+
+class MinHeap extends Heap {
+    constructor(capacity) {
+        super(capacity)
+    }
+
+    insert(data) {
+        if (this.count >= this.n) return console.warn("堆已满")
+
+        let {arr} = this
+        let i = ++this.count
+        let j = parseInt(i/2)
+        arr[i] = data
+        while(j > 0 && arr[j] > arr[i]) {
+            swap(arr, j, i)
+            i = j
+            j = parseInt(i/2)
+        }
+
+        return this
+    }
+
+    heapify(a, n, i) {
+        while(true) {
+            let maxPos = i
+            if (i*2 <= n && a[i*2] < a[i]) maxPos = 2*i
+            if (i*2+1 <= n && a[i*2+1] < a[maxPos])  maxPos = i*2+1 
+            if (maxPos == i) break
+            swap(a, maxPos, i)
+            i = maxPos
+        }
+    }
+}
+
+// demo
+let heap = Heap.createMaxHeap(100)
+heap.insert(5).insert(4).insert(6).insert(8).insert(7).insert(3).insert(2).insert(1).print()
+heap.removeTop().print().sort().print()
+
+let minHeap = Heap.createMinHeap(100)
+minHeap.insert(5).insert(4).insert(6).insert(8).insert(7).insert(3).insert(2).insert(1).print()
+minHeap.removeTop().print().sort().print()
+
+
+exports.Heap = Heap
 
 /**
     证明堆中2n+1-n的节点为叶子节点：
