@@ -42,12 +42,13 @@ class Heap {
     removeTop() {
         let {arr} = this
         if (this.count == 0) return console.warn("空堆")
+        let top = arr[1]
         arr[1] = arr[this.count] 
         this.count--
         arr.pop()
         this.heapify(this.arr, this.count, 1)
 
-        return this
+        return top
     }
 
     heapify(a, n, i) {
@@ -158,13 +159,15 @@ class MinHeap extends Heap {
 }
 
 // demo
-let heap = Heap.createMaxHeap(100)
-heap.insert(5).insert(4).insert(6).insert(8).insert(7).insert(3).insert(2).insert(1).print()
-heap.removeTop().print().sort().print()
+// let heap = Heap.createMaxHeap(100)
+// heap.insert(5).insert(4).insert(6).insert(8).insert(7).insert(3).insert(2).insert(1).print()
+// heap.removeTop()
+// heap.print().sort().print()
 
-let minHeap = Heap.createMinHeap(100)
-minHeap.insert(5).insert(4).insert(6).insert(8).insert(7).insert(3).insert(2).insert(1).print()
-minHeap.removeTop().print().sort().print()
+// let minHeap = Heap.createMinHeap(100)
+// minHeap.insert(5).insert(4).insert(6).insert(8).insert(7).insert(3).insert(2).insert(1).print()
+// minHeap.removeTop()
+// minHeap.print().sort().print()
 
 
 exports.Heap = Heap
