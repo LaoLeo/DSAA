@@ -11,7 +11,7 @@ const {
  *  1. 合并有序小文件
  */
 function mergeOrderedLittleFiles() {
-    const capacity = 100
+    const capacity = 6
     let files = readFiles(capacity)
     const bigFile = {
         name: "IAmBigFile",
@@ -69,9 +69,58 @@ function mergeOrderedLittleFiles() {
     }
 }
 
-let bigFile = mergeOrderedLittleFiles()
-console.log(bigFile.contents)
+// let bigFile = mergeOrderedLittleFiles()
+// console.log(bigFile.contents)
 
 /**
- * top K
+ * 2. 高性能定时器
  */
+class Timer {
+    constructor() {
+        this._timer = null
+        this._tasksHeap = Heap.createMinHeap(100)
+        this._tasksHeap.setCompareKey("timestamp")
+    }
+    /**
+     * 
+     * @param {Array} tasks [{ id: number, timestamp: number, fn: function }] 
+     */
+    setTask(tasks) {
+        this._tasksHeap.buildHeap(tasks, tasks.length)
+    }
+    setup() {
+        let now = Date.now()
+        let topTask = this._tasksHeap.removeTop()
+        if (!topTask) return console.log("无任务")
+        let interval = topTask.timestamp - now 
+        if (interval < 0) {
+            topTask.fn.call(null)
+            this.setup()
+        } else {
+            let delay = Math.floor((interval / 1000)) 
+            console.log(`${delay}s后执行task${topTask.id}`)
+            setTimeout(() => {
+                topTask.fn.call(null)
+                this.setup()
+            }, delay * 1000);
+        }
+    }
+}
+
+function _createTask() {
+    let ret = [] 
+    for (let i = 0; i < 5; i++) {
+        ret.push({
+            id: i,
+            timestamp: Date.now() + 5 * 1000 * (i+1),
+            fn() {
+                console.log("执行task"+i)
+            }
+        })
+    }
+    return ret
+}
+const tasks = _createTask()
+const timer = new Timer()
+timer.setTask(tasks)
+timer.setup()

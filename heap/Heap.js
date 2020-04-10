@@ -25,6 +25,8 @@ class Heap {
         this.arr = [] // 数组，从下标为1开始存储数据
         this.n = capacity // 堆可以存储数据的最大个数
         this.count = 0 // 堆中已经存储的数据个数
+
+        this.key = null // 比较的key，针对数组item为对象的情况
     }
 
     static createMaxHeap(capacity) {
@@ -33,6 +35,15 @@ class Heap {
 
     static createMinHeap(capacity) {
         return new MinHeap(capacity)
+    }
+
+    setCompareKey(key) {
+        this.key = key
+    }
+
+    _getValue(i) {
+        const key = this.key
+        return key ? this.arr[i][key] : this.arr[i]
     }
 
     insert() {
@@ -60,6 +71,10 @@ class Heap {
     // 从非叶子节点开始自下往上堆化
     // O(n)
     buildHeap(a, n) {
+        if (!this.arr || this.arr.length == 0) this.arr = a.slice()
+        this.arr.unshift(null) 
+        this.count = n
+
         for (let i = parseInt(n/2);i >=1 ; i--) {
             this.heapify(a, n, i)
         }
@@ -103,7 +118,7 @@ class MaxHeap extends Heap {
         let i = ++this.count
         let j = parseInt(i/2)
         arr[i] = data
-        while(j > 0 && arr[j] < arr[i]) {
+        while(j > 0 && this._getValue(j) < this._getValue(i)) {
             swap(arr, j, i)
             i = j
             j = parseInt(i/2)
@@ -116,8 +131,8 @@ class MaxHeap extends Heap {
     heapify(a, n, i) {
         while(true) {
             let maxPos = i
-            if (i*2 <= n && a[i*2] > a[i]) maxPos = 2*i
-            if (i*2+1 <= n && a[i*2+1] > a[maxPos])  maxPos = i*2+1 
+            if (i*2 <= n && this._getValue(i*2) > this._getValue(i)) maxPos = 2*i
+            if (i*2+1 <= n && this._getValue(i*2+1) > this._getValue(maxPos))  maxPos = i*2+1 
             if (maxPos == i) break
             swap(a, maxPos, i)
             i = maxPos
@@ -137,7 +152,7 @@ class MinHeap extends Heap {
         let i = ++this.count
         let j = parseInt(i/2)
         arr[i] = data
-        while(j > 0 && arr[j] > arr[i]) {
+        while(j > 0 && this._getValue(j) > this._getValue(i)) {
             swap(arr, j, i)
             i = j
             j = parseInt(i/2)
@@ -149,8 +164,8 @@ class MinHeap extends Heap {
     heapify(a, n, i) {
         while(true) {
             let maxPos = i
-            if (i*2 <= n && a[i*2] < a[i]) maxPos = 2*i
-            if (i*2+1 <= n && a[i*2+1] < a[maxPos])  maxPos = i*2+1 
+            if (i*2 <= n && this._getValue(i*2) < this._getValue(i)) maxPos = 2*i
+            if (i*2+1 <= n && this._getValue(i*2+1) < this._getValue(maxPos))  maxPos = i*2+1 
             if (maxPos == i) break
             swap(a, maxPos, i)
             i = maxPos
