@@ -72,7 +72,7 @@ class Heap {
     // O(n)
     buildHeap(a, n) {
         if (!this.arr || this.arr.length == 0) this.arr = a.slice()
-        this.arr.unshift(null) 
+        if (this.arr[0]!=null || this.arr[0]!=undefined) this.arr.unshift(null) 
         this.count = n
 
         for (let i = parseInt(n/2);i >=1 ; i--) {

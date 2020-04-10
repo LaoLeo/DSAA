@@ -120,7 +120,39 @@ function _createTask() {
     }
     return ret
 }
-const tasks = _createTask()
-const timer = new Timer()
-timer.setTask(tasks)
-timer.setup()
+// const tasks = _createTask()
+// const timer = new Timer()
+// timer.setTask(tasks)
+// timer.setup()
+
+
+/**
+ * 二：topK
+ */
+
+
+/**
+ * 查找排列在前topK大数据
+ */
+function topK(arr, k) {
+    let minHeap = Heap.createMinHeap(k)
+    minHeap.buildHeap(arr.slice(0, k), k)
+    
+    for (let i = k; i < arr.length; i++) {
+        if (minHeap.arr[1] < arr[i]) {
+            minHeap.removeTop()
+            minHeap.insert(arr[i])
+        }
+        
+    }
+
+    minHeap.sort().print()
+    return minHeap.arr.slice(1, k+1)
+}
+let array = [0, 4, 3, 3,4, 6,8,100, 6, 848]
+topK(array, 5)
+
+
+/**
+ * 三: 中位数
+ */
