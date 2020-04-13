@@ -37,6 +37,10 @@ class Heap {
         return new MinHeap(capacity)
     }
 
+    get top() {
+        return this.arr[1]
+    }
+
     setCompareKey(key) {
         this.key = key
     }
@@ -76,21 +80,19 @@ class Heap {
         this.count = n
 
         for (let i = parseInt(n/2);i >=1 ; i--) {
-            this.heapify(a, n, i)
+            this.heapify(this.arr, n, i)
         }
     }
 
     // 堆排序，将堆顶元素放到数组最后
     // O(nlogn)
-    sort(a, n) {
-        a = a || this.arr
-        n = n || this.count
-        this.buildHeap(a, n)
-        let k = n
+    sort() {
+        this.buildHeap(this.arr, this.count)
+        let k = this.count
         while(k > 0) {
-            swap(a, 1, k)
+            swap(this.arr, 1, k)
             k--
-            this.heapify(a, k, 1)
+            this.heapify(this.arr, k, 1)
         }
 
         return this

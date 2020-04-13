@@ -154,5 +154,59 @@ topK(array, 5)
 
 
 /**
- * 三: 中位数
+ * 三: 求中位数,针对动态数据
  */
+class SearchMedian {
+    constructor(sourceArray, percentage = 50/100) {
+        this.percentage = percentage
+        this.maxHeap = Heap.createMaxHeap(1000)
+        this.minHeap = Heap.createMinHeap(1000)
+        this.total = 0
+        this._init(sourceArray)
+    }
+    _init(array) {
+        // 先排序，然后分出大小堆
+        let heap = Heap.createMaxHeap(1000)
+        heap.buildHeap(array, array.length)
+        heap.sort().print()
+        let sortedArr = heap.arr.slice(1)
+        let cutoff = Math.ceil((sortedArr.length * this.percentage)) 
+        this.maxHeap.buildHeap(sortedArr.slice(0, cutoff), cutoff)
+        this.minHeap.buildHeap(sortedArr.slice(cutoff), sortedArr.length-cutoff)
+        this.total = sortedArr.length
+    }
+    getResult() {
+        console.log(`${this.percentage}位数：${this.maxHeap.top}`)
+        return this.maxHeap.top
+    }
+    insert(data) {
+        this.total++
+        if (data > this.maxHeap.top) {
+            this.minHeap.insert(data)
+        } else {
+            this.maxHeap.insert(data)
+        }
+
+        let cutoff = Math.ceil((this.total * this.percentage)) 
+        if (cutoff > this.maxHeap.count) {
+            while (cutoff != this.maxHeap.count) {
+                let top = this.minHeap.removeTop()
+                this.maxHeap.insert(top)
+            }
+        } else {
+            while (cutoff != this.minHeap.count) {
+                let top = this.maxHeap.removeTop()
+                this.minHeap.insert(top)
+            }
+        }
+    }
+}
+
+let sm = new SearchMedian([1,2,8,3,7,6,4,5,9,10,11])
+sm.getResult()
+sm.insert(12)
+sm.insert(13)
+sm.insert(14)
+sm.getResult()
+sm = new SearchMedian([1,2,8,3,7,6,4,5,9,10,10, 10,10,10,10], 9/10)
+sm.getResult()
